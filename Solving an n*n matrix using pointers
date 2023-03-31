@@ -1,0 +1,89 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct matrix{
+    int **number[4][4];
+};
+
+int deter(int **num, int len, int offset) {
+    int **tmpnum, skip = 0;
+    int temp=0, signnum = -1, detervalue = 0;
+    tmpnum=(int **)malloc((len-1)*sizeof(int *));
+//    printf("Please give the values for the matrix\n");
+    for(int i=0; i<len-1; i++){
+        tmpnum[i] = (int *)malloc((len-1)*sizeof(int));
+    }
+
+    int row=1;
+    for(int i=0; i <len; i++)
+    {
+        
+        if(i == offset)
+        {
+            skip = 1;
+            continue;
+        }
+        for(int j=1;j<len; j++)
+        {
+            tmpnum[i-skip][j-1] = num[row][j];
+            printf("%d ", tmpnum[i-skip][j-1]);
+        }
+            printf("\n");
+            row++;
+    }
+
+    
+    if (len-1 == 2) {
+        detervalue =  ((tmpnum[0][0] * tmpnum[1][1]) - (tmpnum[0][1] * tmpnum[1][0]));
+    }
+    else{
+        for(int i =0; i<len-1;i++)
+        {   
+            signnum *= -1;
+            temp += signnum * deter(tmpnum, len-1, i);
+        }
+
+    }
+    for(int i=0; i<len-1; i++){
+        free(tmpnum[i]);
+    }
+    free (tmpnum);
+    return detervalue;
+}
+
+int main()
+{
+    struct matrix *ptr;
+    int **number, len;
+    int **cofactor;
+    
+    int i;
+    number=(int **)malloc(4*sizeof(int *));
+    printf("Please give the values for the matrix\n");
+    for(i=0; i<4; i++){
+        number[i] = (int *)malloc(4*sizeof(int));
+    }
+            printf("Please tell the value for cell");
+
+    for(i=0; i<4; i++){
+        for(int j=0; j<4; j++){
+            
+            number[i][j] = rand()%100;
+            printf("[%d],  ", number[i][j]);
+//            scanf("%d", &number[i][j]);
+        }
+            printf("\n");
+    }
+    int temp=0;
+    int signnum = -1;
+    len = 4;
+    for(i=0;i<4;i++)
+    {
+        signnum *= -1;
+        temp += signnum * deter(number, len, i);
+
+    }
+    printf("value of deter is %d \n", temp);
+    return 0;
+    
+}
