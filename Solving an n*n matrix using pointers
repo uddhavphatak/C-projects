@@ -14,23 +14,37 @@ int deter(int **num, int len, int offset) {
         tmpnum[i] = (int *)malloc((len-1)*sizeof(int));
     }
 
-    int row=1;
-    for(int i=0; i <len; i++)
+    int row=0, col=0;
+    int column=1;
+    printf("len=%d, offset=%d\n", len, offset);
+    for(int i=1; i <len; i++)
     {
-        
-        if(i == offset)
+        col=0;
+ /*       if(i == offset)
         {
             skip = 1;
             continue;
-        }
-        for(int j=1;j<len; j++)
+        }*/
+        for(int j=0;j<len; j++)
         {
-            tmpnum[i-skip][j-1] = num[row][j];
-            printf("%d ", tmpnum[i-skip][j-1]);
+            if(j == offset){
+                skip = 1;
+                continue;
+            }
+            tmpnum[row][col] = num[i][j];
+             col++;           
         }
-            printf("\n");
             row++;
     }
+    for (row =0; row <len-1; row++)
+    {
+        for (col=0; col<len-1; col++)
+        {
+             printf("%d \t", tmpnum[row][col]);
+        }
+        printf("\n");
+    }
+
 
     
     if (len-1 == 2) {
@@ -38,9 +52,10 @@ int deter(int **num, int len, int offset) {
     }
     else{
         for(int i =0; i<len-1;i++)
-        {   
+        {
             signnum *= -1;
-            temp += signnum * deter(tmpnum, len-1, i);
+            temp = signnum* num[1][i+1] * deter(tmpnum, len-1, i);
+            detervalue += temp;
         }
 
     }
@@ -48,7 +63,9 @@ int deter(int **num, int len, int offset) {
         free(tmpnum[i]);
     }
     free (tmpnum);
+    
     return detervalue;
+    
 }
 
 int main()
@@ -80,7 +97,7 @@ int main()
     for(i=0;i<4;i++)
     {
         signnum *= -1;
-        temp += signnum * deter(number, len, i);
+        temp += signnum* number[i][0] * deter(number, len, i);
 
     }
     printf("value of deter is %d \n", temp);
