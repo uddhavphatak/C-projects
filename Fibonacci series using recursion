@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <windows.h>
+
+int fibo(int n){
+    int c;
+    if(n==0){
+        return 0;
+    }
+    else if (n==1){
+        return 1;
+    }
+    else{
+        c=fibo(n-1)+fibo(n-2);
+        return c;
+    }
+}
+
+int main()
+{   
+    int n;
+
+    printf("Please tell the number of terms of fibonacci series that you want");
+    scanf(" %d", &n);
+
+
+    printf("The fibonacci series is given as:");
+
+    for (int i =0; i<n; i++){
+        printf("%d,", fibo(i));
+    }
+
+
+}
