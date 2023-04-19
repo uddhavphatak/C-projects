@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <conio.h>
+
+struct pngheader{
+	uint8_t pngsignature[8];
+	
+}header;
+
+struct imageheader{
+	uint8_t IHDR[13];
+}ihdr;
+
+int pngsig(FILE *fp)
+{
+	char str1[50];
+    char str2[50];
+    int result;
+	int cn1, m;
+	int loop;
+    int i;
+
+	fread(header.pngsignature, 8, 1, fp);
+
+	for(int i=0; i<8; i++){
+		printf("%02x ", header.pngsignature[i]);
+	}
+
+	char cmp[20][3]={"89 ","50 ","4e ","47 ", "0d ", "0a ", "1a ", "0a "};
+
+	i=0;
+    loop=0;
+    
+    while(cmp[loop][3] != '\0')
+    {
+        sprintf((char*)(str2+i),"%02X", cmp[loop]);
+        loop+=1;
+        i+=2;
+    }
+
+	memcpy(str1, header.pngsignature, 8);
+
+
+
+//	printf("%s ", cmp);
+
+
+	result == memcmp(str1, str2, 30);
+
+	if(result==0)
+		return -1;
+	
+	return 0;
+};
+
+int IHDR(FILE *fp){
+	int cn1=8 ,m=0;
+
+	while ( (cn1=fgetc(fp)) != EOF ){
+	if(m>8)
+		continue;
+    printf( "%02x ", cn1);
+
+	cn1=ihdr.IHDR[m];
+	m++;
+	
+
+}
+printf("\n");
+}
+
+int main()
+{
+FILE *fr;
+int cn1, m=0;
+
+fr = fopen( "C:\\Users\\uddha\\OneDrive\\Pictures\\guess1.png", "rb" );
+
+pngsig(fr);
+
+if(pngsig == 0)
+	printf("This is a png file");
+else
+	printf("hello");
+
+
+fclose( fr );
+}
+
