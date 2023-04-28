@@ -12,7 +12,6 @@ struct imageheader {
     uint8_t png_header[13];
 } ihdr;
 
-
 long long hexToDecimal(char hex[]);
 
 int pngsig(FILE *fp) {
@@ -29,7 +28,6 @@ int pngsig(FILE *fp) {
 };
 
 int imgheader(FILE *fp) {
-    int i, j;
     uint8_t png_header[25];
     char hex_buffer[3];
 
@@ -87,13 +85,11 @@ int imgheader(FILE *fp) {
         printf("filtermethod(only accepted value)");
 }
 
-
-
 int main() {
     FILE *fp;
     int result, bytes_read;
 
-    fp = fopen("C:\\Users\\uddha\\OneDrive\\Pictures\\guess1.png", "rb");
+    fp = fopen("C:\\Users\\uddha\\OneDrive\\Pictures\\guess1.png", "rb+");
     if (fp == NULL) {
         printf("Failed to open file\n");
         return 1;
@@ -112,7 +108,6 @@ int main() {
 
     return 0;
 }
-
 
 long long hexToDecimal(char hex[]) {
 long long decimal = 0, base = 1;
