@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+long long hexToDecimal(char hex[]);
+
+int main() {
+    uint8_t png_header[54];
+    uint8_t colorTable[2048];
+    uint8_t buffer[2048][2048];
+    FILE *fp;
+    uint8_t hex_buffer[2];
+    uint8_t out_buffer[2048][2048];
+
+    fp = fopen("C:\\Users\\uddha\\OneDrive\\Pictures\\guess1.png", "rb+");
+    if (fp == NULL) {
+        printf("Failed to open file\n");
+        return 1;
+    }
+
+    fread(png_header, sizeof(uint8_t), 54, fp);
+
+    sprintf(hex_buffer, "%02X", png_header[19]);
+        long long width = hexToDecimal(hex_buffer);
+
+    sprintf(hex_buffer, "%02X", png_header[23]);
+        long long height = hexToDecimal(hex_buffer);
+
+    sprintf(hex_buffer, "%02X", png_header[24]);
+        long long Bits_per_pixel = hexToDecimal(hex_buffer);
+
+    if(Bits_per_pixel <= 8)	
+	    fread(colorTable, sizeof(unsigned char), 1024, fp); 
+
+    int imgDataSize = width * height;
+
+    fread(buffer,sizeof(unsigned char),imgDataSize,fp);	
+
+    for(int i = 0; i < width; i++){
+
+	        for(int j = 0; j < height; j++){
+                out_buffer[i][j] = buffer[j][i];
+	        }
+        }   
+    FILE *fo = fopen("C:\\Users\\uddha\\OneDrive\\Pictures\\guess2.png", "wb");
+    if(Bits_per_pixel <= 8)
+       	fwrite(colorTable, 8, 1024, fo);
+
+    fwrite( out_buffer, 8, imgDataSize, fo);
+
+    printf("hello world");
+
+    fclose(fo);
+    fclose(fp);
+
+    return 0;
+};
+
+long long hexToDecimal(char hex[]) {
+long long decimal = 0, base = 1;
+    int i = 0, value, length;
+
+    // find the length of the hexadecimal number
+    length = strlen(hex);
+    length--;
+
+    // convert hexadecimal to decimal
+    for (i = 0; hex[i] != '\0'; i++) {
+        if (hex[i] >= '0' && hex[i] <= '9') {
+            value = hex[i] - 48;
+        }
+        else if (hex[i] >= 'a' && hex[i] <= 'f') {
+            value = hex[i] - 97 + 10;
+        }
+        else if (hex[i] >= 'A' && hex[i] <= 'F') {
+            value = hex[i] - 65 + 10;
+        }
+        decimal += value * pow(16, length);
+        length--;
+    }
+
+    return decimal;
+}
