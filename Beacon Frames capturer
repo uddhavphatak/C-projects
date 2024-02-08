@@ -1,0 +1,5 @@
+// first turn the wifi card to Monitering mode.
+
+#include <stdio.h>
+
+int main()
